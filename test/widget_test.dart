@@ -6,7 +6,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:wedding_inv/app.dart';
-import 'package:wedding_inv/data/local_invitation.dart';
 
 void main() {
   setUpAll(() async {
@@ -26,16 +25,6 @@ void main() {
     await (FontLoader(
       'GreatVibes',
     )..addFont(rootBundle.load('assets/fonts/GreatVibes-Regular.ttf'))).load();
-  });
-
-  test('Every configured gallery photo is bundled', () async {
-    for (final path in localInvitation.photoAssets) {
-      expect(
-        (await rootBundle.load(path)).lengthInBytes,
-        greaterThan(0),
-        reason: path,
-      );
-    }
   });
 
   for (final size in [
@@ -75,75 +64,18 @@ void main() {
         await tester.runAsync(() => _capture(captureKey, 'invitation'));
       }
 
-      await tester.ensureVisible(find.byKey(const Key('photo-gallery')));
-      await tester.runAsync(
-        () => precacheImage(
-          ResizeImage(
-            AssetImage(localInvitation.photoAssets.first),
-            height: (size.height * .4).round().clamp(1, 720),
-          ),
-          tester.element(find.byKey(const Key('photo-pages'))),
-        ),
-      );
+      await tester.ensureVisible(find.byKey(const Key('infinity-memories')));
       await _animate(tester);
-      final gallerySize = tester.getSize(
-        find.byKey(const Key('photo-gallery')),
-      );
-      final galleryContext = tester.element(
-        find.byKey(const Key('photo-gallery')),
-      );
-      final galleryRect = tester.getRect(
-        find.byKey(const Key('photo-gallery')),
-      );
-      expect(galleryRect.overlaps(Offset.zero & size), isTrue);
-      final reveal = tester.widget<Opacity>(
-        find
-            .ancestor(
-              of: find.byKey(const Key('photo-gallery')),
-              matching: find.byType(Opacity),
-            )
-            .first,
-      );
-      expect(reveal.opacity, 1);
+      expect(find.byType(Image), findsNothing);
       expect(
         tester
-            .widgetList<RawImage>(
-              find.descendant(
-                of: find.byKey(const Key('photo-pages')),
-                matching: find.byType(RawImage),
-              ),
-            )
-            .any((image) => image.image != null),
-        isTrue,
-      );
-      expect(
-        gallerySize.height,
-        closeTo(MediaQuery.sizeOf(galleryContext).height * .20, .01),
-      );
-      final pageView = tester.widget<ListView>(
-        find.byKey(const Key('photo-pages')),
-      );
-      expect(pageView.physics, isA<NeverScrollableScrollPhysics>());
-      expect(
-        tester
-            .widget<IgnorePointer>(
-              find
-                  .ancestor(
-                    of: find.byKey(const Key('photo-pages')),
-                    matching: find.byType(IgnorePointer),
-                  )
-                  .first,
-            )
-            .ignoring,
+            .getRect(find.byKey(const Key('infinity-memories')))
+            .overlaps(Offset.zero & size),
         isTrue,
       );
       if (size.width == 390) {
-        await tester.runAsync(() => _capture(captureKey, 'gallery'));
+        await tester.runAsync(() => _capture(captureKey, 'memories'));
       }
-      final pageBefore = pageView.controller!.offset;
-      await tester.pump(const Duration(milliseconds: 1500));
-      await tester.pump(const Duration(milliseconds: 120));
-      expect(pageView.controller!.offset, greaterThan(pageBefore));
 
       await tester.ensureVisible(find.byKey(const Key('open-map')));
       await _animate(tester);
@@ -157,7 +89,7 @@ void main() {
       await _animate(tester);
       expect(find.text('RSVP'), findsOneWidget);
       expect(
-        find.textContaining('Online responses will be available soon.'),
+        find.textContaining('We would love to celebrate with you.'),
         findsOneWidget,
       );
       expect(tester.takeException(), isNull);

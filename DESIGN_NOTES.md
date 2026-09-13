@@ -34,15 +34,17 @@
 - **Suggested RSVP fields:** name, attending/declining, total party size including
   the respondent, optional phone number and note, plus automatic submission time.
   Confirm fields, party-size limits, and whether replies can be edited.
-- **Photos:** all 18 unique JPGs appear only in one compact horizontal reel,
-  sourced from local_invitation.dart and shuffled for display. The gallery is the
-  final content section and preserves the latest 20% viewport-height edit.
-  Clear, naturally colored photos overlap at varied angles, sizes and heights,
-  moving continuously as a compact collage without tap, zoom or pause controls.
-  Blur and color filters are removed; the composition gives fleeting glimpses.
-  Motion pauses for reduced-motion settings and when the app is in the background.
-  One exact duplicate is omitted; original files are preserved. Images are loaded
-  lazily as the reel reaches them.
+- **Memories:** the final section features a sculpted black satin infinity
+  ribbon with an interwoven crossing, soft shadow, a level orientation, floating
+  pulse, moving sheen and two tracing glints. Fine flourishes gently undulate.
+  The sole heading is 'To Infinity, Together' in Great Vibes, matching the names,
+  with title-case lettering for readability;
+  'Our memories' is removed. Reduced motion shows a still composition.
+  Photos are excluded from the Flutter asset bundle and local invitation data
+  for privacy. Original files remain on disk and must not be published separately.
+- **Launcher artwork:** black infinity on ivory replaces the Flutter icon on
+  web (favicon and install icons), Android, iOS, macOS and Windows.
+  Regenerate with `flutter test tool/generate_icons.dart`.
 - **Excel workbook:** documents/RSVP_Ahmed_Asmaa.xlsx is created locally with
   Guest List, Summary and Instructions tabs, attendance dropdowns and calculated
   totals. It has no real responses and no online URL or RSVP connection yet.

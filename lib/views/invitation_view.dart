@@ -6,16 +6,13 @@ import '../services/rsvp_submitter.dart';
 import '../theme/invitation_theme.dart';
 import 'widgets/countdown.dart';
 import 'widgets/envelope_cover.dart';
-import 'widgets/photo_gallery.dart';
+import 'widgets/infinity_memories.dart';
 import 'widgets/responsive_page.dart';
 import 'widgets/scroll_reveal.dart';
 import 'widgets/torn_paper.dart';
 
 class InvitationView extends StatefulWidget {
-  const InvitationView({
-    super.key,
-    required this.controller,
-  });
+  const InvitationView({super.key, required this.controller});
 
   final InvitationController controller;
 
@@ -42,23 +39,18 @@ class _InvitationViewState extends State<InvitationView> {
       );
 
       if (!opened) {
-        _showMessage(
-          'Could not open the map. Please try again.',
-        );
+        _showMessage('Could not open the map. Please try again.');
       }
     } catch (_) {
-      _showMessage(
-        'Could not open the map. Please try again.',
-      );
+      _showMessage('Could not open the map. Please try again.');
     }
   }
 
   void _showMessage(String message) {
     if (!mounted) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   void _showRsvp() {
@@ -66,33 +58,25 @@ class _InvitationViewState extends State<InvitationView> {
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      constraints: const BoxConstraints(
-        maxWidth: 480,
-      ),
+      constraints: const BoxConstraints(maxWidth: 480),
       backgroundColor: InvitationTheme.paper,
       builder: (_) => const _RsvpSheet(),
     );
   }
 
   Widget _reveal(Widget child) {
-    return ScrollReveal(
-      scrollController: _scrollController,
-      child: child,
-    );
+    return ScrollReveal(scrollController: _scrollController, child: child);
   }
 
   @override
   Widget build(BuildContext context) {
-    final invitation = widget.controller.invitation;
     final reducedMotion = MediaQuery.disableAnimationsOf(context);
 
     return Scaffold(
       body: ResponsivePage(
         child: SafeArea(
           child: AnimatedSwitcher(
-            duration: Duration(
-              milliseconds: reducedMotion ? 0 : 800,
-            ),
+            duration: Duration(milliseconds: reducedMotion ? 0 : 800),
             switchInCurve: Curves.easeOutCubic,
             transitionBuilder: (child, animation) {
               return FadeTransition(
@@ -108,206 +92,176 @@ class _InvitationViewState extends State<InvitationView> {
             },
             child: !_opened
                 ? EnvelopeCover(
-              key: const ValueKey('cover'),
-              controller: widget.controller,
-              onOpened: () {
-                setState(() => _opened = true);
-              },
-            )
+                    key: const ValueKey('cover'),
+                    controller: widget.controller,
+                    onOpened: () {
+                      setState(() => _opened = true);
+                    },
+                  )
                 : SingleChildScrollView(
-              key: const Key('invitation-scroll'),
-              controller: _scrollController,
-              child: Column(
-                children: [
-                  _reveal(
-                    _Hero(
-                      controller: widget.controller,
-                    ),
-                  ),
-                  _reveal(
-                    Transform.translate(
-                      offset: const Offset(0, -18),
-                      child: TornPaper(
-                        padding: const EdgeInsets.fromLTRB(
-                          34,
-                          56,
-                          34,
-                          62,
-                        ),
-                        color: InvitationTheme.paper,
-                        child: _Welcome(
-                          controller: widget.controller,
-                        ),
-                      ),
-                    ),
-                  ),
-                  _reveal(
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.fromLTRB(
-                        30,
-                        58,
-                        30,
-                        58,
-                      ),
-                      color: InvitationTheme.ivory,
-                      child: Column(
-                        children: [
-                          const _SectionHeading(
-                            eyebrow: 'SAVE THE DATE',
-                            title: 'We will see you\nin…',
-                          ),
-                          const SizedBox(height: 34),
-                          WeddingCountdown(
-                            controller: widget.controller,
-                          ),
-                          const SizedBox(height: 22),
-                          Text(
-                            widget.controller.dateLabel
-                                .toUpperCase(),
-                            textAlign: TextAlign.center,
-                            style: InvitationTheme.eyebrow,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  _reveal(
-                    _LocationSection(
-                      controller: widget.controller,
-                      onOpenMap: _openMap,
-                    ),
-                  ),
-                  _reveal(
-                    TornPaper(
-                      color: InvitationTheme.paper,
-                      padding: const EdgeInsets.fromLTRB(
-                        34,
-                        60,
-                        34,
-                        64,
-                      ),
-                      child: Column(
-                        children: [
-                          const _SectionHeading(
-                            eyebrow: 'THE WEDDING DAY',
-                            title: 'Our timing',
-                          ),
-                          const SizedBox(height: 34),
-                          _TimelineItem(
-                            time: widget.controller.timeLabel,
-                            title: 'Wedding celebration',
-                            detail:
-                            'Welcome, ceremony & celebration',
-                          ),
-                          const SizedBox(height: 40),
-                          const Divider(
-                            color: InvitationTheme.line,
-                          ),
-                          const SizedBox(height: 34),
-                          const _SectionHeading(
-                            eyebrow:
-                            'YOUR PRESENCE IS OUR GIFT',
-                            title: 'Kind wishes',
-                          ),
-                          const SizedBox(height: 18),
-                          const Text(
-                            'The greatest gift is having you beside us as we begin this new chapter.',
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  _reveal(
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(
-                        30,
-                        48,
-                        30,
-                        48,
-                      ),
-                      color: InvitationTheme.ivory,
-                      child: Column(
-                        children: [
-                          const _SectionHeading(
-                            eyebrow: 'PLEASE REPLY',
-                            title: 'Will you join us?',
-                          ),
-                          const SizedBox(height: 18),
-                          const Text(
-                            'Your answer will help us prepare a beautiful evening for everyone.',
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 26),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              key: const Key('rsvp'),
-                              onPressed: _showRsvp,
-                              child: const Text(
-                                'CONFIRM ATTENDANCE',
+                    key: const Key('invitation-scroll'),
+                    controller: _scrollController,
+                    child: Column(
+                      children: [
+                        _reveal(_Hero(controller: widget.controller)),
+                        _reveal(
+                          Transform.translate(
+                            offset: const Offset(0, -18),
+                            child: TornPaper(
+                              padding: const EdgeInsets.fromLTRB(
+                                34,
+                                56,
+                                34,
+                                62,
                               ),
+                              color: InvitationTheme.paper,
+                              child: _Welcome(controller: widget.controller),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        _reveal(
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.fromLTRB(30, 58, 30, 58),
+                            color: InvitationTheme.ivory,
+                            child: Column(
+                              children: [
+                                const _SectionHeading(
+                                  eyebrow: 'SAVE THE DATE',
+                                  title: 'We will see you\nin…',
+                                ),
+                                const SizedBox(height: 34),
+                                WeddingCountdown(controller: widget.controller),
+                                const SizedBox(height: 22),
+                                Text(
+                                  widget.controller.dateLabel.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                  style: InvitationTheme.eyebrow,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        _reveal(
+                          _LocationSection(
+                            controller: widget.controller,
+                            onOpenMap: _openMap,
+                          ),
+                        ),
+                        _reveal(
+                          TornPaper(
+                            color: InvitationTheme.paper,
+                            padding: const EdgeInsets.fromLTRB(34, 60, 34, 64),
+                            child: Column(
+                              children: [
+                                const _SectionHeading(
+                                  eyebrow: 'THE WEDDING DAY',
+                                  title: 'Our timing',
+                                ),
+                                const SizedBox(height: 34),
+                                _TimelineItem(
+                                  time: widget.controller.timeLabel,
+                                  title: 'Wedding celebration',
+                                  detail: 'Welcome, ceremony & celebration',
+                                ),
+                                const SizedBox(height: 40),
+                                const Divider(color: InvitationTheme.line),
+                                const SizedBox(height: 34),
+                                const _SectionHeading(
+                                  eyebrow: 'YOUR PRESENCE IS OUR GIFT',
+                                  title: 'Kind wishes',
+                                ),
+                                const SizedBox(height: 18),
+                                const Text(
+                                  'The greatest gift is having you beside us as we begin this new chapter.',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        _reveal(
+                          Container(
+                            padding: const EdgeInsets.fromLTRB(30, 48, 30, 48),
+                            color: InvitationTheme.ivory,
+                            child: Column(
+                              children: [
+                                const _SectionHeading(
+                                  eyebrow: 'PLEASE REPLY',
+                                  title: 'Will you join us?',
+                                ),
+                                const SizedBox(height: 18),
+                                const Text(
+                                  'Your answer will help us prepare a beautiful evening for everyone.',
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 26),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: FilledButton(
+                                    key: const Key('rsvp'),
+                                    onPressed: _showRsvp,
+                                    child: const Text(
+                                      'CONFIRM ATTENDANCE',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        _reveal(
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(24, 60, 24, 48),
+                            child: Column(
+                              children: [
+                                Text(
+                                  widget.controller.namesLabel,
+                                  textDirection: TextDirection.ltr,
+                                  style: InvitationTheme.script.copyWith(
+                                    fontSize: 42,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  widget.controller.shortDate,
+                                  textDirection: TextDirection.ltr,
+                                  style: InvitationTheme.eyebrow,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        _reveal(
+                          Container(
+                            width: double.infinity,
+                            color: InvitationTheme.stone,
+                            padding: const EdgeInsets.only(top: 54, bottom: 42),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                  ),
+                                  child: Text(
+                                    'To Infinity,Together',
+                                    textAlign: TextAlign.center,
+                                    style: InvitationTheme.script.copyWith(
+                                      fontSize: 42,
+                                      height: 1.35,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                                const InfinityMemories(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  _reveal(
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        24,
-                        60,
-                        24,
-                        48,
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            widget.controller.namesLabel,
-                            textDirection: TextDirection.ltr,
-                            style: InvitationTheme.script.copyWith(
-                              fontSize: 42,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            widget.controller.shortDate,
-                            textDirection: TextDirection.ltr,
-                            style: InvitationTheme.eyebrow,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  if (invitation.photoAssets.isNotEmpty)
-                    _reveal(
-                      Container(
-                        width: double.infinity,
-                        color: InvitationTheme.stone,
-                        padding: const EdgeInsets.only(
-                          top: 54,
-                          bottom: 42,
-                        ),
-                        child: Column(
-                          children: [
-                            const _SectionHeading(
-                              eyebrow:
-                              'TO INFINITY, TOGETHER',
-                              title: 'Our memories',
-                            ),
-                            const SizedBox(height: 24),
-                            PhotoGallery(
-                              photos: invitation.photoAssets,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
           ),
         ),
       ),
@@ -354,8 +308,7 @@ class _RsvpSheetState extends State<_RsvpSheet> {
 
     if (_attending == null) {
       setState(() {
-        _errorMessage =
-        'Please choose whether you will attend.';
+        _errorMessage = 'Please choose whether you will attend.';
       });
       return;
     }
@@ -373,8 +326,7 @@ class _RsvpSheetState extends State<_RsvpSheet> {
         name: _nameController.text,
         attending: _attending!,
         total: _attending! ? _totalAttendees : null,
-        attendeeNames:
-        _attending! ? _attendeeNamesController.text : '',
+        attendeeNames: _attending! ? _attendeeNamesController.text : '',
         message: _messageController.text,
       );
 
@@ -389,31 +341,21 @@ class _RsvpSheetState extends State<_RsvpSheet> {
 
       setState(() {
         _submitting = false;
-        _errorMessage =
-        'Could not submit your response. Please try again.';
+        _errorMessage = 'Could not submit your response. Please try again.';
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final keyboardInset =
-        MediaQuery.of(context).viewInsets.bottom;
+    final keyboardInset = MediaQuery.of(context).viewInsets.bottom;
 
     return SafeArea(
       child: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(
-          28,
-          8,
-          28,
-          28 + keyboardInset,
-        ),
+        padding: EdgeInsets.fromLTRB(28, 8, 28, 28 + keyboardInset),
         child: _submitted
             ? _successView()
-            : Form(
-          key: _formKey,
-          child: _formContent(),
-        ),
+            : Form(key: _formKey, child: _formContent()),
       ),
     );
   }
@@ -422,14 +364,11 @@ class _RsvpSheetState extends State<_RsvpSheet> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Text(
-          'RSVP',
-          style: InvitationTheme.display,
-        ),
+        const Text('RSVP', style: InvitationTheme.display),
         const SizedBox(height: 12),
         const Text(
           'We would love to celebrate with you.\n'
-              'يسعدنا حضوركم ومشاركتكم فرحتنا',
+          'يسعدنا حضوركم ومشاركتكم فرحتنا',
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 26),
@@ -463,14 +402,12 @@ class _RsvpSheetState extends State<_RsvpSheet> {
           onChanged: _submitting
               ? null
               : (value) {
-            setState(() {
-              _attending = value;
-              _errorMessage = null;
-            });
-          },
-          title: const Text(
-            'Yes',
-          ),
+                  setState(() {
+                    _attending = value;
+                    _errorMessage = null;
+                  });
+                },
+          title: const Text('Yes'),
         ),
         RadioListTile<bool>(
           contentPadding: EdgeInsets.zero,
@@ -479,25 +416,21 @@ class _RsvpSheetState extends State<_RsvpSheet> {
           onChanged: _submitting
               ? null
               : (value) {
-            setState(() {
-              _attending = value;
-              _totalAttendees = null;
-              _attendeeNamesController.clear();
-              _errorMessage = null;
-            });
-          },
-          title: const Text(
-            'No (Not an option)',
-          ),
+                  setState(() {
+                    _attending = value;
+                    _totalAttendees = null;
+                    _attendeeNamesController.clear();
+                    _errorMessage = null;
+                  });
+                },
+          title: const Text('No (Not an option)'),
         ),
         if (_errorMessage != null)
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
               _errorMessage!,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.error,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
           ),
         if (_attending == true) ...[
@@ -506,28 +439,22 @@ class _RsvpSheetState extends State<_RsvpSheet> {
             value: _totalAttendees,
             decoration: const InputDecoration(
               labelText:
-              'Total number attending/'
+                  'Total number attending/'
                   'عدد الحاضرين ',
               border: OutlineInputBorder(),
             ),
-            items: List.generate(
-              10,
-                  (index) {
-                final count = index + 1;
+            items: List.generate(10, (index) {
+              final count = index + 1;
 
-                return DropdownMenuItem<int>(
-                  value: count,
-                  child: Text('$count'),
-                );
-              },
-            ),
+              return DropdownMenuItem<int>(value: count, child: Text('$count'));
+            }),
             onChanged: _submitting
                 ? null
                 : (value) {
-              setState(() {
-                _totalAttendees = value;
-              });
-            },
+                    setState(() {
+                      _totalAttendees = value;
+                    });
+                  },
             validator: (_) {
               if (_totalAttendees == null) {
                 return 'Please select the number of attendees.';
@@ -543,10 +470,9 @@ class _RsvpSheetState extends State<_RsvpSheet> {
             textInputAction: TextInputAction.next,
             decoration: const InputDecoration(
               labelText:
-              'Names of everyone attending / '
+                  'Names of everyone attending / '
                   'أسماء جميع الحاضرين',
-              hintText:
-              'Include your own name and your family members',
+              hintText: 'Include your own name and your family members',
               border: OutlineInputBorder(),
             ),
           ),
@@ -558,7 +484,7 @@ class _RsvpSheetState extends State<_RsvpSheet> {
           maxLines: 4,
           decoration: const InputDecoration(
             labelText:
-            'Message for Ahmed & Asmaa / '
+                'Message for Ahmed & Asmaa / '
                 'رسالة لأحمد وأسماء',
             border: OutlineInputBorder(),
           ),
@@ -570,13 +496,13 @@ class _RsvpSheetState extends State<_RsvpSheet> {
             onPressed: _submitting ? null : _submit,
             child: _submitting
                 ? const SizedBox(
-              width: 22,
-              height: 22,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: Colors.white,
-              ),
-            )
+                    width: 22,
+                    height: 22,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
                 : const Text('SUBMIT RSVP'),
           ),
         ),
@@ -603,7 +529,7 @@ class _RsvpSheetState extends State<_RsvpSheet> {
         const SizedBox(height: 12),
         const Text(
           'شكرًا لتأكيد حضورك.\n'
-              'We look forward to celebrating with you.',
+          'We look forward to celebrating with you.',
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 26),
@@ -617,9 +543,7 @@ class _RsvpSheetState extends State<_RsvpSheet> {
 }
 
 class _Hero extends StatelessWidget {
-  const _Hero({
-    required this.controller,
-  });
+  const _Hero({required this.controller});
 
   final InvitationController controller;
 
@@ -633,10 +557,7 @@ class _Hero extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xFFB4AA98),
-            Color(0xFF8F826E),
-          ],
+          colors: [Color(0xFFB4AA98), Color(0xFF8F826E)],
         ),
       ),
       child: Column(
@@ -666,10 +587,7 @@ class _Hero extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 26),
-          const SizedBox(
-            width: 64,
-            child: Divider(color: Colors.white54),
-          ),
+          const SizedBox(width: 64, child: Divider(color: Colors.white54)),
           const SizedBox(height: 26),
           Text(
             controller.shortDate,
@@ -688,9 +606,7 @@ class _Hero extends StatelessWidget {
 }
 
 class _Welcome extends StatelessWidget {
-  const _Welcome({
-    required this.controller,
-  });
+  const _Welcome({required this.controller});
 
   final InvitationController controller;
 
@@ -705,10 +621,7 @@ class _Welcome extends StatelessWidget {
           title: 'You are invited',
         ),
         const SizedBox(height: 20),
-        Text(
-          invitation.message,
-          textAlign: TextAlign.center,
-        ),
+        Text(invitation.message, textAlign: TextAlign.center),
         if (invitation.verse != null) ...[
           const SizedBox(height: 28),
           const Divider(color: InvitationTheme.line),
@@ -726,10 +639,7 @@ class _Welcome extends StatelessWidget {
 }
 
 class _LocationSection extends StatelessWidget {
-  const _LocationSection({
-    required this.controller,
-    required this.onOpenMap,
-  });
+  const _LocationSection({required this.controller, required this.onOpenMap});
 
   final InvitationController controller;
   final VoidCallback onOpenMap;
@@ -743,26 +653,22 @@ class _LocationSection extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(30, 52, 30, 54),
       child: Column(
         children: [
-          const _SectionHeading(
-            eyebrow: 'THE VENUE',
-            title: 'Meet us there',
-          ),
+          const _SectionHeading(eyebrow: 'THE VENUE', title: 'Meet us there'),
           const SizedBox(height: 22),
           Text(
             invitation.venueName,
             textDirection: TextDirection.rtl,
             textAlign: TextAlign.center,
-            style: InvitationTheme.arabic.copyWith(
-              fontSize: 23,
-            ),
+            style: InvitationTheme.arabic.copyWith(fontSize: 23),
           ),
           const SizedBox(height: 22),
           SizedBox(
             width: double.infinity,
-            child: OutlinedButton(
+            child: OutlinedButton.icon(
               key: const Key('open-map'),
               onPressed: onOpenMap,
-              child: const Text('OPEN MAP'),
+              icon: const Icon(Icons.location_on_outlined, size: 21),
+              label: const Text('OPEN MAP', textAlign: TextAlign.center),
             ),
           ),
         ],
@@ -772,10 +678,7 @@ class _LocationSection extends StatelessWidget {
 }
 
 class _SectionHeading extends StatelessWidget {
-  const _SectionHeading({
-    required this.eyebrow,
-    required this.title,
-  });
+  const _SectionHeading({required this.eyebrow, required this.title});
 
   final String eyebrow;
   final String title;
@@ -793,9 +696,7 @@ class _SectionHeading extends StatelessWidget {
         Text(
           title,
           textAlign: TextAlign.center,
-          style: InvitationTheme.script.copyWith(
-            fontSize: 49,
-          ),
+          style: InvitationTheme.script.copyWith(fontSize: 49),
         ),
       ],
     );
@@ -823,9 +724,7 @@ class _TimelineItem extends StatelessWidget {
           child: Text(
             time,
             textDirection: TextDirection.ltr,
-            style: InvitationTheme.display.copyWith(
-              fontSize: 31,
-            ),
+            style: InvitationTheme.display.copyWith(fontSize: 31),
           ),
         ),
         const SizedBox(width: 18),
@@ -843,9 +742,7 @@ class _TimelineItem extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 detail,
-                style: const TextStyle(
-                  color: InvitationTheme.muted,
-                ),
+                style: const TextStyle(color: InvitationTheme.muted),
               ),
             ],
           ),
