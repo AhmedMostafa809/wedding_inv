@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 abstract final class InvitationTheme {
-  static const paper = Color(0xFFF0EAE1);
-  static const ivory = Color(0xFFE0D6C7);
-  static const stone = Color(0xFFAA9F8B);
-  static const gold = Color(0xFF796B58);
-  static const ink = Color(0xFF302C27);
+  static const paper = Color(0xFFFFF8ED);
+  static const ivory = Color(0xFFF4EADB);
+  static const stone = Color(0xFF322B2C);
+  static const gold = Color(0xFF890B20);
+  static const ink = Color(0xFF463B36);
   static const muted = Color(0xFF746C61);
   static const line = Color(0xFFBEB3A3);
 

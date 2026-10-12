@@ -32,74 +32,40 @@ void main() {
     const Size(390, 844),
     const Size(1440, 900),
   ]) {
-    testWidgets('Envelope, invitation and RSVP work at $size', (tester) async {
+    testWidgets('Engagement details at $size', (tester) async {
       tester.view.devicePixelRatio = 1;
       tester.view.physicalSize = size;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
-      final captureKey = GlobalKey();
+      final key = GlobalKey();
       await tester.pumpWidget(
-        RepaintBoundary(key: captureKey, child: const WeddingInvitationApp()),
+        RepaintBoundary(key: key, child: const WeddingInvitationApp()),
       );
       await _animate(tester);
-      expect(
-        Directionality.of(
-          tester.element(find.byKey(const Key('open-envelope'))),
+      expect(find.text('Ahmed'), findsOneWidget);
+      expect(find.text('Habiba'), findsOneWidget);
+      expect(find.textContaining('Asmaa'), findsNothing);
+      expect(find.byKey(const Key('rsvp')), findsNothing);
+      if (size.width == 390)
+        await tester.runAsync(() => _capture(key, 'engagement-hero'));
+      await tester.ensureVisible(find.byKey(const Key('engagement-venue')));
+      await tester.runAsync(
+        () => precacheImage(
+          const AssetImage('assets/venue/golden_gate_villa.png'),
+          tester.element(find.byKey(const Key('villa-photo'))),
         ),
-        TextDirection.ltr,
       );
-      expect(find.text('TAP THE SEAL TO OPEN'), findsOneWidget);
-      if (size.width == 390) {
-        await tester.runAsync(() => _capture(captureKey, 'envelope'));
-      }
-
-      await tester.ensureVisible(find.byKey(const Key('open-envelope')));
-      await tester.tap(find.byKey(const Key('open-envelope')));
       await _animate(tester);
-      expect(find.byKey(const Key('invitation-scroll')), findsOneWidget);
-      expect(find.byKey(const Key('open-envelope')), findsNothing);
-      expect(find.byTooltip('تشغيل الموسيقى'), findsNothing);
-      expect(find.text('Ahmed, Asmaa'), findsWidgets);
-      if (size.width == 390) {
-        await tester.runAsync(() => _capture(captureKey, 'invitation'));
-      }
-
-      await tester.ensureVisible(find.byKey(const Key('infinity-memories')));
+      expect(find.text('Golden Gate Villa'), findsOneWidget);
+      if (size.width == 390)
+        await tester.runAsync(() => _capture(key, 'engagement-venue'));
+      await tester.ensureVisible(find.text('6:30 PM'));
       await _animate(tester);
-      expect(find.byType(Image), findsNothing);
-      expect(
-        tester
-            .getRect(find.byKey(const Key('infinity-memories')))
-            .overlaps(Offset.zero & size),
-        isTrue,
-      );
-      if (size.width == 390) {
-        await tester.runAsync(() => _capture(captureKey, 'memories'));
-      }
-
-      await tester.ensureVisible(find.byKey(const Key('open-map')));
-      await _animate(tester);
-      expect(tester.takeException(), isNull);
-      await tester.ensureVisible(find.byKey(const Key('rsvp')));
-      await _animate(tester);
-      if (size.width == 390) {
-        await tester.runAsync(() => _capture(captureKey, 'details'));
-      }
-      await tester.tap(find.byKey(const Key('rsvp')));
-      await _animate(tester);
-      expect(find.text('RSVP'), findsOneWidget);
-      expect(
-        find.textContaining('We would love to celebrate with you.'),
-        findsOneWidget,
-      );
       expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox.shrink());
     });
   }
-
-  testWidgets('Large text and reduced motion preserve the mobile flow', (
-    tester,
-  ) async {
+  testWidgets('Large text and reduced motion', (tester) async {
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = const Size(320, 568);
     addTearDown(tester.view.resetPhysicalSize);
@@ -109,19 +75,10 @@ void main() {
     addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
     tester.platformDispatcher.textScaleFactorTestValue = 2;
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
-
     await tester.pumpWidget(const WeddingInvitationApp());
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.byKey(const Key('open-envelope')));
-    await tester.tap(find.byKey(const Key('open-envelope')));
-    await tester.pump();
-    await tester.pump();
-    expect(find.byKey(const Key('invitation-scroll')), findsOneWidget);
-    await tester.ensureVisible(find.byKey(const Key('rsvp')));
+    await tester.ensureVisible(find.byKey(const Key('open-map')));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('rsvp')));
-    await tester.pumpAndSettle();
-    expect(find.text('RSVP'), findsOneWidget);
     expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox.shrink());
   });

@@ -1,11 +1,11 @@
 {
-    "name": "Ahmed, Asmaa | دعوة زفاف",
-    "short_name": "Ahmed, Asmaa",
+    "name": "Ahmed, Habiba | دعوة خطوبة",
+    "short_name": "Ahmed, Habiba",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#FAF7EF",
-    "theme_color": "#FAF7EF",
-    "description": "Ahmed and Asmaa's wedding invitation",
+    "background_color": "#FFF8ED",
+    "theme_color": "#FFF8ED",
+    "description": "Ahmed and Habiba's engagement invitation",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
