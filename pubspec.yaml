@@ -63,7 +63,11 @@ flutter:
   uses-material-design: true
   assets:
     - assets/venue/golden_gate_villa.png
+    - assets/engagement/childhood_cutouts.png
   fonts:
+    - family: YouthTouch
+      fonts:
+        - asset: assets/fonts/YouthTouch-PersonalUse.ttf
     - family: GreatVibes
       fonts:
         - asset: assets/fonts/GreatVibes-Regular.ttf

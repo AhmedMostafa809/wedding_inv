@@ -83,7 +83,7 @@ abstract final class InvitationTheme {
   );
 
   static const script = TextStyle(
-    fontFamily: 'GreatVibes',
+    fontFamily: 'YouthTouch',
     fontSize: 56,
     height: 1.35,
     color: ink,

@@ -9,6 +9,9 @@ import 'package:wedding_inv/app.dart';
 
 void main() {
   setUpAll(() async {
+    await (FontLoader('YouthTouch')
+          ..addFont(rootBundle.load('assets/fonts/YouthTouch-PersonalUse.ttf')))
+        .load();
     final loader = FontLoader('Amiri')
       ..addFont(rootBundle.load('assets/fonts/Amiri-Regular.ttf'));
     await loader.load();
@@ -42,6 +45,14 @@ void main() {
         RepaintBoundary(key: key, child: const WeddingInvitationApp()),
       );
       await _animate(tester);
+      await tester.runAsync(
+        () => precacheImage(
+          const AssetImage('assets/engagement/childhood_cutouts.png'),
+          tester.element(find.byKey(const Key('childhood-portraits'))),
+        ),
+      );
+      await tester.pump();
+      expect(find.byKey(const Key('childhood-portraits')), findsOneWidget);
       expect(find.text('Ahmed'), findsOneWidget);
       expect(find.text('Habiba'), findsOneWidget);
       expect(find.textContaining('Asmaa'), findsNothing);
