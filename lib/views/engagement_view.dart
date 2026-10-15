@@ -74,7 +74,14 @@ class _EngagementViewState extends State<EngagementView>
   Widget _body(String text, {Color color = const Color(0xFF463B36)}) => Text(
     text,
     textAlign: TextAlign.center,
-    style: TextStyle(fontSize: 13, height: 1.8, color: color),
+    style: TextStyle(
+      fontFamily: RegExp(r'[0-9]').hasMatch(text)
+          ? 'CormorantGaramond'
+          : 'YouthTouch',
+      fontSize: 27,
+      height: 1.45,
+      color: color,
+    ),
   );
   Widget _reveal(Widget child) =>
       ScrollReveal(scrollController: _scroll, child: child);
@@ -94,11 +101,11 @@ class _EngagementViewState extends State<EngagementView>
                 Padding(
                   padding: const EdgeInsets.fromLTRB(24, 42, 24, 10),
                   child: Text(
-                    'A LITTLE NOTE, A LOT OF LOVE',
+                    'A little note, a lot of love',
                     textAlign: TextAlign.center,
                     style: InvitationTheme.eyebrow.copyWith(
                       color: _red,
-                      letterSpacing: 2,
+                      letterSpacing: 0,
                     ),
                   ),
                 ),
@@ -128,65 +135,27 @@ class _EngagementViewState extends State<EngagementView>
                             ),
                             child: child,
                           ),
-                          child: CustomPaint(
-                            painter: _HeartsPainter(),
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 56),
-                              child: Column(
+                          child: Column(
+                            children: [
+                              Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Transform.rotate(
-                                          angle: -.1,
-                                          child: _script(
-                                            invitation.groom,
-                                            size: 37,
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Transform.rotate(
-                                          angle: .1,
-                                          child: _script(
-                                            invitation.bride,
-                                            size: 37,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                  Expanded(
+                                    child: _script(invitation.groom, size: 37),
                                   ),
-                                  const SizedBox(height: 8),
-                                  Image.asset(
-                                    'assets/engagement/childhood_cutouts.png',
-                                    key: const Key('childhood-portraits'),
-                                    width: double.infinity,
-                                    fit: BoxFit.contain,
-                                    semanticLabel: 'Childhood photos of Ahmed on the left and Habiba on the right',
+                                  Expanded(
+                                    child: _script(invitation.bride, size: 37),
                                   ),
                                 ],
                               ),
-                            ),
-                          ),
-                        ),
-                        Transform.rotate(
-                          angle: -.035,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 24,
-                              vertical: 10,
-                            ),
-                            decoration: const BoxDecoration(
-                              color: _red,
-                              borderRadius: BorderRadius.all(
-                                Radius.elliptical(100, 20),
+                              const SizedBox(height: 8),
+                              Image.asset(
+                                'assets/engagement/childhood_portraits.png',
+                                key: const Key('childhood-portraits'),
+                                width: double.infinity,
+                                fit: BoxFit.contain,
+                                semanticLabel: 'Childhood photos of Ahmed and Habiba surrounded by hearts. We are engaged!',
                               ),
-                            ),
-                            child: _script(
-                              "We're getting engaged!",
-                              size: 31,
-                              color: _cream,
-                            ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 34),
@@ -229,12 +198,13 @@ class _EngagementViewState extends State<EngagementView>
                             Flexible(
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
-                                child: Text('2026',
-                                style: InvitationTheme.display.copyWith(
-                                  fontSize: 37,
-                                  color: _red,
-                                  height: 1.3,
-                                ),
+                                child: Text(
+                                  '2026',
+                                  style: InvitationTheme.display.copyWith(
+                                    fontSize: 37,
+                                    color: _red,
+                                    height: 1.3,
+                                  ),
                                 ),
                               ),
                             ),
@@ -268,7 +238,7 @@ class _EngagementViewState extends State<EngagementView>
                                       Text(
                                         entry.$1,
                                         style: const TextStyle(
-                                          fontSize: 13,
+                                          fontSize: 25,
                                           color: _red,
                                         ),
                                       ),
@@ -283,22 +253,26 @@ class _EngagementViewState extends State<EngagementView>
                                                 child: Center(
                                                   child: Text(
                                                     entry.$2,
-                                                    style: InvitationTheme.display.copyWith(
-                                                      fontSize: 37,
-                                                      color: _red,
-                                                      height: 1.3,
-                                                    ),
+                                                    style: InvitationTheme
+                                                        .display
+                                                        .copyWith(
+                                                          fontSize: 37,
+                                                          color: _red,
+                                                          height: 1.3,
+                                                        ),
                                                   ),
                                                 ),
                                               )
                                             : Center(
                                                 child: Text(
                                                   entry.$2,
-                                                  style: InvitationTheme.display.copyWith(
-                                                    fontSize: 37,
-                                                    color: _red,
-                                                    height: 1.3,
-                                                  ),                                      ),
+                                                  style: InvitationTheme.display
+                                                      .copyWith(
+                                                        fontSize: 37,
+                                                        color: _red,
+                                                        height: 1.3,
+                                                      ),
+                                                ),
                                               ),
                                       ),
                                     ],
@@ -363,7 +337,7 @@ class _EngagementViewState extends State<EngagementView>
                               minimumSize: const Size(190, 52),
                             ),
                             icon: const Icon(Icons.location_on_outlined),
-                            label: const Text('OPEN THE MAP'),
+                            label: const Text('Open the map'),
                           ),
                         ],
                       ),
@@ -377,11 +351,14 @@ class _EngagementViewState extends State<EngagementView>
                       children: [
                         _script('When to be there?', size: 44),
                         const SizedBox(height: 24),
-                        Text(widget.controller.timeLabel,  style: InvitationTheme.display.copyWith(
-                          fontSize: 37,
-                          color: _red,
-                          height: 1.3,
-                        ),),
+                        Text(
+                          widget.controller.timeLabel,
+                          style: InvitationTheme.display.copyWith(
+                            fontSize: 37,
+                            color: _red,
+                            height: 1.3,
+                          ),
+                        ),
                         _body('Friday, 30 October 2026\nCairo time'),
                         const SizedBox(height: 18),
                         _body(
@@ -444,51 +421,6 @@ class _SingleHeartPainter extends CustomPainter {
   @override
   bool shouldRepaint(_SingleHeartPainter oldDelegate) =>
       oldDelegate.color != color;
-}
-
-class _HeartsPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final positions = [
-      const Offset(.08, .25),
-      const Offset(.79, .12),
-      const Offset(.83, .68),
-      const Offset(.04, .74),
-      const Offset(.48, .02),
-    ];
-    for (var i = 0; i < positions.length; i++) {
-      canvas.save();
-      canvas.translate(
-        size.width * positions[i].dx,
-        size.height * positions[i].dy,
-      );
-      canvas.rotate(i.isEven ? -.2 : .2);
-      final heart = _heart(Size(i.isEven ? 30 : 40, i.isEven ? 32 : 42));
-      canvas.drawPath(
-        heart,
-        Paint()
-          ..color = _red
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 1.5,
-      );
-      if (i.isOdd) {
-        canvas.clipPath(heart);
-        for (var y = -10.0; y < 60; y += 4) {
-          canvas.drawLine(
-            Offset(0, y),
-            Offset(45, y - 20),
-            Paint()
-              ..color = _red
-              ..strokeWidth = .8,
-          );
-        }
-      }
-      canvas.restore();
-    }
-  }
-
-  @override
-  bool shouldRepaint(_HeartsPainter oldDelegate) => false;
 }
 
 class _PaperEdge extends CustomClipper<Path> {

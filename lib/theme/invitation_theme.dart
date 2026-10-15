@@ -11,7 +11,7 @@ abstract final class InvitationTheme {
 
   static ThemeData get theme => ThemeData(
     useMaterial3: true,
-    fontFamily: 'Montserrat',
+    fontFamily: 'YouthTouch',
     scaffoldBackgroundColor: paper,
     colorScheme: ColorScheme.fromSeed(
       seedColor: gold,
@@ -40,10 +40,10 @@ abstract final class InvitationTheme {
         shadowColor: const Color(0x60302C27),
         side: const BorderSide(color: gold, width: 1.3),
         textStyle: const TextStyle(
-          fontFamily: 'Montserrat',
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 1.2,
+          fontFamily: 'YouthTouch',
+          fontSize: 27,
+          fontWeight: FontWeight.normal,
+          letterSpacing: 0,
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       ),
@@ -57,10 +57,10 @@ abstract final class InvitationTheme {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         textStyle: const TextStyle(
-          fontFamily: 'Montserrat',
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 1.2,
+          fontFamily: 'YouthTouch',
+          fontSize: 27,
+          fontWeight: FontWeight.normal,
+          letterSpacing: 0,
         ),
       ),
     ),
@@ -75,10 +75,10 @@ abstract final class InvitationTheme {
   );
 
   static const eyebrow = TextStyle(
-    fontFamily: 'Montserrat',
-    fontSize: 10,
-    letterSpacing: 1.8,
-    fontWeight: FontWeight.w600,
+    fontFamily: 'YouthTouch',
+    fontSize: 25,
+    letterSpacing: 0,
+    fontWeight: FontWeight.normal,
     color: muted,
   );
 
